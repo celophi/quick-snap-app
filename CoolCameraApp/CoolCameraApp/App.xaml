@@ -23,4 +23,13 @@
 
         </ResourceDictionary>
     </Application.Resources>
+    <Application.MainPage>
+        <ContentPage BackgroundColor="{DynamicResource PageBackgroundColor}">
+            <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+                <BlazorWebView.RootComponents>
+                    <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Routes}" />
+                </BlazorWebView.RootComponents>
+            </BlazorWebView>
+        </ContentPage>
+    </Application.MainPage>
 </Application>
