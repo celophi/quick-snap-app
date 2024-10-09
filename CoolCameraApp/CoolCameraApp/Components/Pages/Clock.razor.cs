@@ -1,12 +1,25 @@
 ﻿using Blazor.Extensions;
 using Blazor.Extensions.Canvas;
 using Blazor.Extensions.Canvas.Canvas2D;
+using CoolCameraApp.Providers;
 using Microsoft.AspNetCore.Components;
 using LineCap = Blazor.Extensions.Canvas.Canvas2D.LineCap;
 
 namespace CoolCameraApp.Components.Pages;
-public partial class Clock : ComponentBase
+public sealed partial class Clock : ComponentBase, IDisposable
 {
+    [Inject]
+    private ITaskRunProvider _taskRunProvider { get; init; } = default!;
+
+    [Inject]
+    private ITaskDelayProvider _taskDelayProvider { get; init; } = default!;
+
+    [Inject]
+    private IDateTimeProvider _dateTimeProvider { get; init; } = default!;
+
+    [Inject]
+    private ICancellationTokenProvider _cancellationTokenProvider { get; init; } = default!;
+
     private const string grayColor = "#f8f9fa";
     private const string blueColor = "#007bff";
 
@@ -45,19 +58,32 @@ public partial class Clock : ComponentBase
     /// </summary>
     private DateTime renderedTime;
 
+    /// <summary>
+    /// Used to cancel the rendering task.
+    /// </summary>
+    private readonly CancellationTokenSource _cancellationTokenSource = new();
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            _renderTask = Task.Run(async () =>
+            _renderTask = _taskRunProvider.Run(async () =>
             {
-                _stagingContext = await stagingCanvas.CreateCanvas2DAsync();
-                _targetContext = await targetCanvas.CreateCanvas2DAsync();
-
-                while (true)
+                try
                 {
-                    await RenderAsync();
+                    _stagingContext = await stagingCanvas.CreateCanvas2DAsync();
+                    _targetContext = await targetCanvas.CreateCanvas2DAsync();
+
+                    while (!_cancellationTokenProvider.IsCancellationRequested(_cancellationTokenSource))
+                    {
+                        await RenderAsync();
+                    }
                 }
+                catch (Exception ex)
+                {
+                    var a = ex;
+                }
+
             });
         }
 
@@ -71,7 +97,7 @@ public partial class Clock : ComponentBase
     private async Task RenderAsync()
     {
         // Determine the starting time and time to render for both clocks.
-        renderedTime = DateTime.Now;
+        renderedTime = _dateTimeProvider.Now();
         timeOfDay = renderedTime.ToString("h:mm:ss tt");
 
         // Draw the analog clock
@@ -86,12 +112,12 @@ public partial class Clock : ComponentBase
         // Measure the time taken for all rendering and apply a floor of at least 1 second delay.
         // This helps make the clock rendering look consistent.
         const int targetDelayMs = 1000;
-        var elapsed = DateTime.Now - renderedTime;
+        var elapsed = _dateTimeProvider.Now() - renderedTime;
         var remainingDelay = targetDelayMs - (int)elapsed.TotalMilliseconds;
 
         if (remainingDelay > 0)
         {
-            await Task.Delay(remainingDelay);
+            await _taskDelayProvider.Delay(remainingDelay, _cancellationTokenSource.Token);
         }
     }
 
@@ -206,5 +232,11 @@ public partial class Clock : ComponentBase
         await _stagingContext.LineToAsync(0, -length);
         await _stagingContext.StrokeAsync();
         await _stagingContext.RotateAsync(-angle);
+    }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        _cancellationTokenSource.Cancel();
     }
 }

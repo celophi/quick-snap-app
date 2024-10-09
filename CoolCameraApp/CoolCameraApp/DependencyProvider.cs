@@ -1,4 +1,6 @@
-﻿namespace CoolCameraApp;
+﻿using CoolCameraApp.Providers;
+
+namespace CoolCameraApp;
 public sealed class DependencyProvider
 {
     private readonly IServiceCollection _serviceCollection;
@@ -10,6 +12,12 @@ public sealed class DependencyProvider
 
     public void Register()
     {
+        _serviceCollection
+            .AddTransient<IDateTimeProvider, DateTimeProvider>()
+            .AddTransient<ITaskRunProvider, TaskRunProvider>()
+            .AddTransient<ITaskDelayProvider, TaskDelayProvider>()
+            .AddTransient<ICancellationTokenProvider, CancellationTokenProvider>();
+
         //_serviceCollection
         //    .AddTransient(sp => MediaPicker.Default)
         //    .AddTransient<IPermissionsProvider, PermissionsProvider>()
