@@ -67,7 +67,5 @@ public class ClockSpecification
     public void Test1()
     {
         var component = this.testContext.RenderComponent<Clock>();
-
-        var a = component.Markup;
     }
 }

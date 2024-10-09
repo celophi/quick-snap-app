@@ -63,27 +63,24 @@ public sealed partial class Clock : ComponentBase, IDisposable
     /// </summary>
     private readonly CancellationTokenSource _cancellationTokenSource = new();
 
+    /// <summary>
+    /// Maximum width of the clock.
+    /// </summary>
+    private const int clockWidth = 400;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             _renderTask = _taskRunProvider.Run(async () =>
             {
-                try
-                {
-                    _stagingContext = await stagingCanvas.CreateCanvas2DAsync();
-                    _targetContext = await targetCanvas.CreateCanvas2DAsync();
+                _stagingContext = await stagingCanvas.CreateCanvas2DAsync();
+                _targetContext = await targetCanvas.CreateCanvas2DAsync();
 
-                    while (!_cancellationTokenProvider.IsCancellationRequested(_cancellationTokenSource))
-                    {
-                        await RenderAsync();
-                    }
-                }
-                catch (Exception ex)
+                while (!_cancellationTokenProvider.IsCancellationRequested(_cancellationTokenSource))
                 {
-                    var a = ex;
+                    await RenderAsync();
                 }
-
             });
         }
 
@@ -130,9 +127,9 @@ public sealed partial class Clock : ComponentBase, IDisposable
         await _stagingContext!.SetTransformAsync(1, 0, 0, 1, 0, 0);
 
         await _stagingContext.SetFillStyleAsync("white");
-        await _stagingContext.FillRectAsync(0, 0, 400, 400);
+        await _stagingContext.FillRectAsync(0, 0, clockWidth, clockWidth);
 
-        float radius = 400 / 2;
+        float radius = clockWidth / 2;
         await _stagingContext.TranslateAsync(radius, radius);
         radius = radius * 0.9f;
 
