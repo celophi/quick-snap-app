@@ -177,10 +177,13 @@ public sealed partial class Clock : ComponentBase, IDisposable
         for (var num = 1; num <= 12; num++)
         {
             float angle = Convert.ToSingle(num * Math.PI / 6);
+
             await _stagingContext.RotateAsync(angle);
             await _stagingContext.TranslateAsync(0, -radius * 0.85);
             await _stagingContext.RotateAsync(-angle);
+
             await _stagingContext.FillTextAsync(num.ToString(), 0, 0);
+
             await _stagingContext.RotateAsync(angle);
             await _stagingContext.TranslateAsync(0, radius * 0.85);
             await _stagingContext.RotateAsync(-angle);

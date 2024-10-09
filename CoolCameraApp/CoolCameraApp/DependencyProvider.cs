@@ -16,7 +16,10 @@ public sealed class DependencyProvider
             .AddTransient<IDateTimeProvider, DateTimeProvider>()
             .AddTransient<ITaskRunProvider, TaskRunProvider>()
             .AddTransient<ITaskDelayProvider, TaskDelayProvider>()
-            .AddTransient<ICancellationTokenProvider, CancellationTokenProvider>();
+            .AddTransient<ICancellationTokenProvider, CancellationTokenProvider>()
+            .AddTransient<IPermissionsProvider, PermissionsProvider>();
+
+        _serviceCollection.AddTransient(sp => MediaPicker.Default);
 
         //_serviceCollection
         //    .AddTransient(sp => MediaPicker.Default)
