@@ -2,21 +2,48 @@
 using Blazor.Extensions.Canvas;
 using Blazor.Extensions.Canvas.Canvas2D;
 using Microsoft.AspNetCore.Components;
+using LineCap = Blazor.Extensions.Canvas.Canvas2D.LineCap;
 
 namespace CoolCameraApp.Components.Pages;
 public partial class Clock : ComponentBase
 {
-    private BECanvas canvasReferenceA;
-    private BECanvas canvasReferenceB;
+    private const string grayColor = "#f8f9fa";
+    private const string blueColor = "#007bff";
 
-    private bool Visible = false;
+    /// <summary>
+    /// 2D context for staging.
+    /// </summary>
+    private Canvas2DContext? _stagingContext;
 
+    /// <summary>
+    /// 2D context for displaying
+    /// </summary>
+    private Canvas2DContext? _targetContext;
 
-    Canvas2DContext _context2D;
+    /// <summary>
+    /// Invisible canvas that is used to stage all drawing operations.
+    /// </summary>
+    private BECanvas? stagingCanvas;
 
-    private Task _renderTask;
+    /// <summary>
+    /// Visible canvas that receives all drawings that are staged.
+    /// </summary>
+    private BECanvas? targetCanvas;
 
+    /// <summary>
+    /// Digital clock time.
+    /// </summary>
+    private string timeOfDay = string.Empty;
 
+    /// <summary>
+    /// Ongoing task that performs continual rendering.
+    /// </summary>
+    private Task? _renderTask;
+
+    /// <summary>
+    /// Synchronized time to display for both clocks.
+    /// </summary>
+    private DateTime renderedTime;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -24,135 +51,160 @@ public partial class Clock : ComponentBase
         {
             _renderTask = Task.Run(async () =>
             {
-                _context2D = await canvasReferenceA.CreateCanvas2DAsync();
-                var visibleCanvas = await canvasReferenceB.CreateCanvas2DAsync();
+                _stagingContext = await stagingCanvas.CreateCanvas2DAsync();
+                _targetContext = await targetCanvas.CreateCanvas2DAsync();
 
                 while (true)
                 {
-                    try
-                    {
-                        await DrawAll(true);
-
-
-
-                        await visibleCanvas.DrawImageAsync(canvasReferenceA.CanvasReference, 0, 0);
-                        await Task.Delay(200);
-                        //await InvokeAsync(StateHasChanged);
-                    }
-                    catch (Exception ex)
-                    {
-                        var a = ex;
-                    }
+                    await RenderAsync();
                 }
             });
+        }
 
+        await Task.CompletedTask;
+    }
+
+    /// <summary>
+    /// Renders both analog and digital clocks.
+    /// </summary>
+    /// <returns></returns>
+    private async Task RenderAsync()
+    {
+        // Determine the starting time and time to render for both clocks.
+        renderedTime = DateTime.Now;
+        timeOfDay = renderedTime.ToString("h:mm:ss tt");
+
+        // Draw the analog clock
+        await DrawClock();
+
+        // Copy the drawing from the invisible canvas to the visible one to prevent the user from seeing artificats during the drawing process.
+        await _targetContext!.DrawImageAsync(stagingCanvas!.CanvasReference, 0, 0);
+
+        // This is necessary for the digital clock to be re-rendered.
+        await InvokeAsync(StateHasChanged);
+
+        // Measure the time taken for all rendering and apply a floor of at least 1 second delay.
+        // This helps make the clock rendering look consistent.
+        const int targetDelayMs = 1000;
+        var elapsed = DateTime.Now - renderedTime;
+        var remainingDelay = targetDelayMs - (int)elapsed.TotalMilliseconds;
+
+        if (remainingDelay > 0)
+        {
+            await Task.Delay(remainingDelay);
         }
     }
 
-    private async Task DrawAll(bool flip)
+    /// <summary>
+    /// Draws the entire clock.
+    /// </summary>
+    /// <returns></returns>
+    private async Task DrawClock()
     {
-        await _context2D.SetTransformAsync(1, 0, 0, 1, 0, 0);
+        await _stagingContext!.SetTransformAsync(1, 0, 0, 1, 0, 0);
 
-        await _context2D.SetFillStyleAsync("black");
-        await _context2D.FillRectAsync(0, 0, 400, 400);
+        await _stagingContext.SetFillStyleAsync("white");
+        await _stagingContext.FillRectAsync(0, 0, 400, 400);
 
-        double radius = 400 / 2;
-        await _context2D.TranslateAsync(radius, radius);
-        radius = radius * 0.9;
+        float radius = 400 / 2;
+        await _stagingContext.TranslateAsync(radius, radius);
+        radius = radius * 0.9f;
 
-        await DrawClock(radius);
-    }
-
-    private async Task DrawClock(double radius)
-    {
-        await _context2D.ArcAsync(0, 0, radius, 0, 2 * Math.PI);
-        await _context2D.SetFillStyleAsync("white");
-        await _context2D.FillAsync();
+        await _stagingContext.ArcAsync(0, 0, radius, 0, 2 * Math.PI);
+        await _stagingContext.SetFillStyleAsync(blueColor);
+        await _stagingContext.FillAsync();
 
         await DrawFaceAsync(radius);
         await DrawNumbers(radius);
         await DrawTime(radius);
     }
 
-    private async Task DrawFaceAsync(double radius)
+    /// <summary>
+    /// Draws the clock face.
+    /// </summary>
+    /// <param name="radius">Radius of the clock face</param>
+    /// <returns></returns>
+    private async Task DrawFaceAsync(float radius)
     {
-        // no gradient
-        await _context2D.BeginPathAsync();
-        await _context2D.ArcAsync(0, 0, radius, 0, 2 * Math.PI);
-        await _context2D.SetFillStyleAsync("white");
-        await _context2D.FillAsync();
+        // Draw the big blue circle.
+        await _stagingContext!.BeginPathAsync();
+        await _stagingContext.ArcAsync(0, 0, radius, 0, 2 * Math.PI);
+        await _stagingContext.SetFillStyleAsync(blueColor);
+        await _stagingContext.FillAsync();
 
-        // no stroke
-        await _context2D.BeginPathAsync();
-        await _context2D.ArcAsync(0, 0, radius * 0.1, 0, 2 * Math.PI);
-        await _context2D.SetFillStyleAsync("black");
-        await _context2D.FillAsync();
+        // Draw a smaller gray circle for the dials
+        await _stagingContext.BeginPathAsync();
+        await _stagingContext.ArcAsync(0, 0, radius * 0.1, 0, 2 * Math.PI);
+        await _stagingContext.SetFillStyleAsync(grayColor);
+        await _stagingContext.FillAsync();
     }
 
-    private async Task DrawNumbers(double radius)
+    /// <summary>
+    /// Draws the numbers 1 - 12 on the clock face
+    /// </summary>
+    /// <param name="radius">Radius of the clock face</param>
+    /// <returns></returns>
+    private async Task DrawNumbers(float radius)
     {
-        await _context2D.SetFontAsync($"{radius * 0.15}px arial");
-        await _context2D.SetTextBaselineAsync(TextBaseline.Middle);
-        await _context2D.SetTextAlignAsync(TextAlign.Center);
+        await _stagingContext!.SetFillStyleAsync("white");
+        await _stagingContext.SetFontAsync($"{radius * 0.15}px arial");
+        await _stagingContext.SetTextBaselineAsync(TextBaseline.Middle);
+        await _stagingContext.SetTextAlignAsync(TextAlign.Center);
 
-        for (var num = 1; num < 13; num++)
+        for (var num = 1; num <= 12; num++)
         {
             float angle = Convert.ToSingle(num * Math.PI / 6);
-            await _context2D.RotateAsync(angle);
-            await _context2D.TranslateAsync(0, -radius * 0.85);
-            await _context2D.RotateAsync(-angle);
-            await _context2D.FillTextAsync(num.ToString(), 0, 0);
-            await _context2D.RotateAsync(angle);
-            await _context2D.TranslateAsync(0, radius * 0.85);
-            await _context2D.RotateAsync(-angle);
+            await _stagingContext.RotateAsync(angle);
+            await _stagingContext.TranslateAsync(0, -radius * 0.85);
+            await _stagingContext.RotateAsync(-angle);
+            await _stagingContext.FillTextAsync(num.ToString(), 0, 0);
+            await _stagingContext.RotateAsync(angle);
+            await _stagingContext.TranslateAsync(0, radius * 0.85);
+            await _stagingContext.RotateAsync(-angle);
         }
     }
 
-    private async Task DrawTime(double radius)
+    /// <summary>
+    /// Draws the current time on the clock
+    /// </summary>
+    /// <param name="radius">Radius of the clock face</param>
+    /// <returns></returns>
+    private async Task DrawTime(float radius)
     {
-        var now = DateTime.Now;
-        var hour = now.Hour;
-        var minute = now.Minute;
-        var second = now.Second;
+        // Calculate hour angle and convert 24-hour format to 12-hour
+        var hour = renderedTime.Hour % 12;
+        var minute = renderedTime.Minute;
+        var second = renderedTime.Second;
 
-        hour = hour % 12;
-        var doubleHour = (hour * Math.PI / 6) + (minute * Math.PI / (6 * 60)) + (second * Math.PI / (360 * 60));
+        var hourAngle = (hour * Math.PI / 6) + (minute * Math.PI / (6 * 60)) + (second * Math.PI / (360 * 60));
+        await DrawHand(Convert.ToSingle(hourAngle), radius * 0.5f, radius * 0.07f);
 
-        var length = Convert.ToSingle(radius * 0.5);
-        var width = Convert.ToSingle(radius * 0.07);
-        var floatHour = Convert.ToSingle(doubleHour);
+        // Calculate minute angle
+        var minuteAngle = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
+        await DrawHand(Convert.ToSingle(minuteAngle), radius * 0.8f, radius * 0.07f);
 
-        await DrawHand(floatHour, length, width);
-
-        // minute
-        var doubleMinute = (minute * Math.PI / 30) + (second * Math.PI / (30 * 60));
-        var floatMinute = Convert.ToSingle(doubleMinute);
-
-        length = Convert.ToSingle(radius * 0.8);
-        width = Convert.ToSingle(radius * 0.07);
-
-        await DrawHand(floatMinute, length, width);
-
-        // second
-
-        var doubleSecond = (second * Math.PI / 30);
-        var floatSecond = Convert.ToSingle(doubleSecond);
-
-        length = Convert.ToSingle(radius * 0.9);
-        width = Convert.ToSingle(radius * 0.02);
-
-        await DrawHand(floatSecond, length, width);
+        // Calculate second angle
+        var secondAngle = second * Math.PI / 30;
+        await DrawHand(Convert.ToSingle(secondAngle), radius * 0.9f, radius * 0.02f);
     }
 
-    private async Task DrawHand(float pos, float length, float width)
+    /// <summary>
+    /// Draws the clock hands.
+    /// </summary>
+    /// <param name="angle">Angle to draw the line</param>
+    /// <param name="length">Length of the line</param>
+    /// <param name="width">Width of the line</param>
+    /// <returns></returns>
+    private async Task DrawHand(float angle, float length, float width)
     {
-        await _context2D.BeginPathAsync();
-        await _context2D.SetLineWidthAsync(width);
-        await _context2D.SetLineCapAsync(Blazor.Extensions.Canvas.Canvas2D.LineCap.Round);
-        await _context2D.MoveToAsync(0, 0);
-        await _context2D.RotateAsync(pos);
-        await _context2D.LineToAsync(0, -length);
-        await _context2D.StrokeAsync();
-        await _context2D.RotateAsync(-pos);
+        await _stagingContext!.SetStrokeStyleAsync(grayColor);
+        await _stagingContext.BeginPathAsync();
+        await _stagingContext.SetLineWidthAsync(width);
+        await _stagingContext.SetLineCapAsync(LineCap.Round);
+        await _stagingContext.MoveToAsync(0, 0);
+        await _stagingContext.RotateAsync(angle);
+        await _stagingContext.LineToAsync(0, -length);
+        await _stagingContext.StrokeAsync();
+        await _stagingContext.RotateAsync(-angle);
     }
 }

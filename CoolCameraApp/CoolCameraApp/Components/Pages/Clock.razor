@@ -3,7 +3,19 @@
 @page "/clock"
 
 <div style="display:none">
-    <BECanvas @ref="canvasReferenceA" Width="400" Height="400"></BECanvas>
+    <BECanvas @ref="stagingCanvas" Width="400" Height="400"></BECanvas>
 </div>
-
-<BECanvas @ref="canvasReferenceB" Width="400" Height="400"></BECanvas>
+<div class="container">
+    <div class="row">
+        <div class="col-xl-12 d-flex justify-content-center">
+            <BECanvas @ref="targetCanvas" Width="400" Height="400"></BECanvas>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="time-box">
+                @timeOfDay
+            </div>
+        </div>
+    </div>
+</div>
