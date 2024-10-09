@@ -39,6 +39,11 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
+      <CodesignKey>Apple Development: Chris Harris (QHWR9NM88J)</CodesignKey>
+      <CodesignProvision>VS: WildCard Development</CodesignProvision>
+    </PropertyGroup>
+
     <ItemGroup>
         <!-- App Icon -->
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
@@ -71,7 +76,6 @@
 
     <ItemGroup>
         <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.1" />
-        <PackageReference Include="CommunityToolkit.Maui" Version="9.1.0" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.91" />

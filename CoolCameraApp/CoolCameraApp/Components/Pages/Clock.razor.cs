@@ -6,26 +6,61 @@ using Microsoft.AspNetCore.Components;
 namespace CoolCameraApp.Components.Pages;
 public partial class Clock : ComponentBase
 {
-    private BECanvas canvasReference;
+    private BECanvas canvasReferenceA;
+    private BECanvas canvasReferenceB;
+
+    private bool Visible = false;
+
+
     Canvas2DContext _context2D;
 
     private Task _renderTask;
+
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            _context2D = await canvasReference.CreateCanvas2DAsync();
-            await _context2D.SetFillStyleAsync("black");
-            await _context2D.FillRectAsync(0, 0, 400, 400);
+            _renderTask = Task.Run(async () =>
+            {
+                _context2D = await canvasReferenceA.CreateCanvas2DAsync();
+                var visibleCanvas = await canvasReferenceB.CreateCanvas2DAsync();
 
-            double radius = canvasReference.Height / 2;
-            await _context2D.TranslateAsync(radius, radius);
-            radius = radius * 0.9;
+                while (true)
+                {
+                    try
+                    {
+                        await DrawAll(true);
 
-            await DrawClock(radius);
+
+
+                        await visibleCanvas.DrawImageAsync(canvasReferenceA.CanvasReference, 0, 0);
+                        await Task.Delay(200);
+                        //await InvokeAsync(StateHasChanged);
+                    }
+                    catch (Exception ex)
+                    {
+                        var a = ex;
+                    }
+                }
+            });
+
         }
+    }
 
+    private async Task DrawAll(bool flip)
+    {
+        await _context2D.SetTransformAsync(1, 0, 0, 1, 0, 0);
+
+        await _context2D.SetFillStyleAsync("black");
+        await _context2D.FillRectAsync(0, 0, 400, 400);
+
+        double radius = 400 / 2;
+        await _context2D.TranslateAsync(radius, radius);
+        radius = radius * 0.9;
+
+        await DrawClock(radius);
     }
 
     private async Task DrawClock(double radius)
@@ -36,30 +71,7 @@ public partial class Clock : ComponentBase
 
         await DrawFaceAsync(radius);
         await DrawNumbers(radius);
-
-
-
-        _renderTask = Task.Run(async () =>
-        {
-            while (true)
-            {
-
-
-                await DrawTime(radius);
-                await Task.Delay(200);
-
-                try
-                {
-                    //await InvokeAsync(StateHasChanged);
-                    await _context2D.RestoreAsync();
-                }
-                catch (Exception ex)
-                {
-                    var a = ex;
-                }
-
-            }
-        });
+        await DrawTime(radius);
     }
 
     private async Task DrawFaceAsync(double radius)
