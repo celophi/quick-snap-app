@@ -21,7 +21,7 @@ public sealed partial class Camera : ComponentBase
                 var status = await _permissionsProvider.RequestCameraPermissionsAsync();
             }
 
-            var file = await _mediaPicker.CapturePhotoAsync();
+            var file = await _mediaPicker.CapturePhotoAsync(new MediaPickerOptions { Title = "thing" });
 
             if (file != null)
             {

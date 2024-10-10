@@ -5,7 +5,9 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolCameraApp", "CoolCameraApp\CoolCameraApp.csproj", "{575193BF-F65A-4B31-B2C8-169A24557AB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolCameraApp.Tests", "CoolCameraApp.Tests\CoolCameraApp.Tests.csproj", "{BFA40397-EE70-49C1-ACE5-6C0A6D4FCF4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoolCameraApp.Tests", "CoolCameraApp.Tests\CoolCameraApp.Tests.csproj", "{BFA40397-EE70-49C1-ACE5-6C0A6D4FCF4C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CoolCameraApp.Canvas", "CoolCameraApp.Canvas\CoolCameraApp.Canvas.csproj", "{611F2D4A-0413-443D-BF0C-323F1C7E152A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{BFA40397-EE70-49C1-ACE5-6C0A6D4FCF4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFA40397-EE70-49C1-ACE5-6C0A6D4FCF4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFA40397-EE70-49C1-ACE5-6C0A6D4FCF4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{611F2D4A-0413-443D-BF0C-323F1C7E152A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{611F2D4A-0413-443D-BF0C-323F1C7E152A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{611F2D4A-0413-443D-BF0C-323F1C7E152A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{611F2D4A-0413-443D-BF0C-323F1C7E152A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

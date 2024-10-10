@@ -1,14 +1,12 @@
 ﻿@using Blazor.Extensions.Canvas
+@using CoolCameraApp.Canvas
 
 @page "/clock"
 
-<div style="display:none">
-    <BECanvas @ref="stagingCanvas" Width="clockWidth" Height="clockWidth"></BECanvas>
-</div>
 <div class="container">
     <div class="row">
         <div class="col-xl-12 d-flex justify-content-center">
-            <BECanvas @ref="targetCanvas" Width="clockWidth" Height="clockWidth"></BECanvas>
+            <AnalogClock @ref="_analogClock" Width="400" BackgroundColor="#007bff" ForegroundColor="#f8f9fa"></AnalogClock>
         </div>
     </div>
     <div class="row">

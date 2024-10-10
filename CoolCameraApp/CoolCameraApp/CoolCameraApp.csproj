@@ -82,4 +82,8 @@
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CoolCameraApp.Canvas\CoolCameraApp.Canvas.csproj" />
+    </ItemGroup>
+
 </Project>

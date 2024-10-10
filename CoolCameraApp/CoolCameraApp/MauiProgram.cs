@@ -29,6 +29,7 @@ public static class MauiProgram
             builder.Logging.AddDebug();
         }
 
+        new Canvas.DependencyProvider(builder.Services).Register();
         new DependencyProvider(builder.Services).Register();
 
         return builder.Build();
