@@ -1,1 +1,1 @@
-# cool-camera-app
+# QuickSnap Mobile App
