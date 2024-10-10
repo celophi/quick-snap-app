@@ -3,7 +3,7 @@ using Blazor.Extensions.Canvas;
 using Blazor.Extensions.Canvas.Canvas2D;
 using Microsoft.AspNetCore.Components;
 
-namespace CoolCameraApp.Canvas;
+namespace QuickSnappApp.Canvas;
 public sealed partial class AnalogClock : ComponentBase
 {
     /// <summary>
@@ -71,6 +71,7 @@ public sealed partial class AnalogClock : ComponentBase
             await SetupAsync();
         }
 
+        await _stagingContext!.BeginBatchAsync();
         await _stagingContext!.SetTransformAsync(1, 0, 0, 1, 0, 0);
 
         await _stagingContext.SetFillStyleAsync("white");
@@ -87,6 +88,8 @@ public sealed partial class AnalogClock : ComponentBase
         await DrawFaceAsync(radius);
         await DrawNumbers(radius);
         await DrawTime(radius, time);
+
+        await _stagingContext.EndBatchAsync();
     }
 
     /// <summary>

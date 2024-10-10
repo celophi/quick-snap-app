@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace CoolCameraApp;
+namespace QuickSnappApp;
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate
 {

@@ -1,4 +1,4 @@
-﻿namespace CoolCameraApp;
+﻿namespace QuickSnappApp;
 
 public partial class App : Application
 {

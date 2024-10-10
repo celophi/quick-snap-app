@@ -1,7 +1,6 @@
-﻿using CoolCameraApp.Canvas.Providers;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace CoolCameraApp.Canvas;
+namespace QuickSnappApp.Canvas;
 public sealed class DependencyProvider
 {
     private readonly IServiceCollection _serviceCollection;
@@ -13,10 +12,12 @@ public sealed class DependencyProvider
 
     public void Register()
     {
-        _serviceCollection
-            .AddTransient<IDateTimeProvider, DateTimeProvider>()
-            .AddTransient<ITaskRunProvider, TaskRunProvider>()
-            .AddTransient<ITaskDelayProvider, TaskDelayProvider>()
-            .AddTransient<ICancellationTokenProvider, CancellationTokenProvider>();
+        //_serviceCollection.AddTransient<ICanvasFactory, CanvasFactory>();
+
+        //_serviceCollection
+        //    .AddTransient<IDateTimeProvider, DateTimeProvider>()
+        //    .AddTransient<ITaskRunProvider, TaskRunProvider>()
+        //    .AddTransient<ITaskDelayProvider, TaskDelayProvider>()
+        //    .AddTransient<ICancellationTokenProvider, CancellationTokenProvider>();
     }
 }

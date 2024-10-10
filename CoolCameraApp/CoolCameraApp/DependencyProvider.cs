@@ -1,6 +1,6 @@
-﻿using CoolCameraApp.Providers;
+﻿using QuickSnappApp.Providers;
 
-namespace CoolCameraApp;
+namespace QuickSnappApp;
 public sealed class DependencyProvider
 {
     private readonly IServiceCollection _serviceCollection;

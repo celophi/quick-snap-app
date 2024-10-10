@@ -1,4 +1,4 @@
-﻿namespace CoolCameraApp.Providers;
+﻿namespace QuickSnappApp.Providers;
 public sealed class TaskDelayProvider : ITaskDelayProvider
 {
     /// <inheritdoc/>

@@ -1,8 +1,8 @@
 ﻿<maui:MauiWinUIApplication
-    x:Class="CoolCameraApp.WinUI.App"
+    x:Class="QuickSnappApp.WinUI.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:maui="using:Microsoft.Maui"
-    xmlns:local="using:CoolCameraApp.WinUI">
+    xmlns:local="using:QuickSnappApp.WinUI">
 
 </maui:MauiWinUIApplication>

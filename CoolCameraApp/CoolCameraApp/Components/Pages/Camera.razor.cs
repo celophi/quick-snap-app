@@ -1,7 +1,7 @@
-﻿using CoolCameraApp.Providers;
+﻿using QuickSnappApp.Providers;
 using Microsoft.AspNetCore.Components;
 
-namespace CoolCameraApp.Components.Pages;
+namespace QuickSnappApp.Components.Pages;
 public sealed partial class Camera : ComponentBase
 {
     [Inject]

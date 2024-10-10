@@ -1,10 +1,10 @@
 using Bunit;
-using CoolCameraApp.Components.Pages;
-using CoolCameraApp.Providers;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
+using QuickSnappApp.Components.Pages;
+using QuickSnappApp.Providers;
 
-namespace CoolCameraApp.Tests;
+namespace QuickSnappApp.Tests;
 
 public class ClockSpecification
 {

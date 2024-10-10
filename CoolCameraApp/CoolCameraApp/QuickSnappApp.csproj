@@ -49,8 +49,8 @@
         <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
 
         <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-
+        
+		
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
         <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
@@ -65,6 +65,10 @@
     <ItemGroup>
       <Content Remove="appsettings.json" />
       <Content Remove="appsettings.Production.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Splash\splash.svg" />
     </ItemGroup>
 
     <ItemGroup>
@@ -83,7 +87,21 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CoolCameraApp.Canvas\CoolCameraApp.Canvas.csproj" />
+      <ProjectReference Include="..\CoolCameraApp.Canvas\QuickSnappApp.Canvas.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="wwwroot\img\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiSplashScreen Include="Resources\Splash\splash.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Update="wwwroot\img\logo.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

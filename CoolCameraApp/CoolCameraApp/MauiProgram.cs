@@ -1,10 +1,10 @@
 ﻿
-using CoolCameraApp.Configuration;
+using QuickSnappApp.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Reflection;
 
-namespace CoolCameraApp;
+namespace QuickSnappApp;
 public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
@@ -45,7 +45,7 @@ public static class MauiProgram
     {
         using var stream = Assembly
             .GetExecutingAssembly()
-            .GetManifestResourceStream("CoolCameraApp.appsettings.json");
+            .GetManifestResourceStream("QuickSnappApp.appsettings.json");
 
         var configurationRoot = new ConfigurationBuilder().AddJsonStream(stream!).Build();
         builder.Configuration.AddConfiguration(configurationRoot);

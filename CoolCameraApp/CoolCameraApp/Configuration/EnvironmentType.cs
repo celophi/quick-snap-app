@@ -1,4 +1,4 @@
-﻿namespace CoolCameraApp.Configuration;
+﻿namespace QuickSnappApp.Configuration;
 public enum EnvironmentType
 {
     Development,
