@@ -1,4 +1,5 @@
 ﻿using QuickSnapApp.Canvas;
+using QuickSnapApp.Canvas.Providers;
 using QuickSnapApp.Providers;
 
 namespace QuickSnapApp;
@@ -19,7 +20,8 @@ public sealed class DependencyProvider
             .AddTransient<ITaskDelayProvider, TaskDelayProvider>()
             .AddTransient<ICancellationTokenProvider, CancellationTokenProvider>()
             .AddTransient<IPermissionsProvider, PermissionsProvider>()
-            .AddTransient<IBECanvasFactory, BECanvasFactory>();
+            .AddTransient<IBECanvasFactory, BECanvasFactory>()
+            .AddTransient<IMathProvider, MathProvider>();
 
         _serviceCollection.AddTransient(sp => MediaPicker.Default);
 
