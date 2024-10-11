@@ -73,7 +73,7 @@ public class AnalogClockSpecification
     private string BackgroundColor = "pink";
     private string ForegroundColor = "yellow";
 
-    [Fact(DisplayName = "Analog clock should draw the clock face, hands, time in order with the correct math.")]
+    [Fact(DisplayName = "Analog clock draw should draw the clock face, hands, time in order with the correct math.")]
     public async Task Test1()
     {
         // Given I have the following drawing order expectation and math
@@ -262,6 +262,49 @@ public class AnalogClockSpecification
 
         // Then I expect no out of order commands
         await action.Should().NotThrowAsync();
+    }
+
+    [Fact(DisplayName = "Analog clock draw should setup the double buffer canvases and contexts.")]
+    public async Task Test2()
+    {
+        // Given I have a rendered analog clock
+        var component = this.testContext.RenderComponent<AnalogClock>(parameters => parameters
+          .Add(p => p.Width, Width)
+          .Add(p => p.BackgroundColor, BackgroundColor)
+          .Add(p => p.ForegroundColor, ForegroundColor)
+        );
+
+        // When I draw
+        await component.Instance.DrawAsync(currentTime);
+
+        // Then I expect to have canvases
+        _becanvasFactoryMock.Verify(m => m.Create(), Times.Exactly(2));
+
+        // Then I expect to have a staging context
+        _stagingCanvasMock.Verify(m => m.GetCanvas2DAsync(), Times.Once);
+
+        // Then I expect to have a target context
+        _targetCanvasMock.Verify(m => m.GetCanvas2DAsync(), Times.Once);
+    }
+
+    [Fact(DisplayName = "Analog clock render should draw the staging canvas to the target canvas.")]
+    public async Task Test3()
+    {
+        // Given I have a rendered analog clock
+        var component = this.testContext.RenderComponent<AnalogClock>(parameters => parameters
+          .Add(p => p.Width, Width)
+          .Add(p => p.BackgroundColor, BackgroundColor)
+          .Add(p => p.ForegroundColor, ForegroundColor)
+        );
+
+        // Given I have drawn a clock
+        await component.Instance.DrawAsync(currentTime);
+
+        // When I render
+        await component.Instance.RenderAsync();
+
+        // Then I expect to copy to the target canvas
+        _targetContextMock.Verify(m => m.DrawImageAsync(_stagingCanvasMock.Object.GetCanvasReference(), 0, 0), Times.Once);
     }
 }
 
