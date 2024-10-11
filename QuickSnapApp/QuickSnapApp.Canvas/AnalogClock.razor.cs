@@ -1,9 +1,8 @@
-﻿using Blazor.Extensions;
-using Blazor.Extensions.Canvas;
-using Blazor.Extensions.Canvas.Canvas2D;
+﻿using Blazor.Extensions.Canvas.Canvas2D;
 using Microsoft.AspNetCore.Components;
+using QuickSnapApp.Canvas.Providers;
 
-namespace QuickSnappApp.Canvas;
+namespace QuickSnapApp.Canvas;
 public sealed partial class AnalogClock : ComponentBase
 {
     /// <summary>
@@ -30,24 +29,30 @@ public sealed partial class AnalogClock : ComponentBase
     /// <summary>
     /// 2D context for staging.
     /// </summary>
-    private Canvas2DContext? _stagingContext;
+    private ICanvas2DContextProvider? _stagingContext;
 
     /// <summary>
     /// 2D context for displaying
     /// </summary>
-    private Canvas2DContext? _targetContext;
+    private ICanvas2DContextProvider? _targetContext;
 
     /// <summary>
     /// Invisible canvas that is used to stage all drawing operations.
     /// </summary>
-    private BECanvas? stagingCanvas = new();
+    private IBECanvasProvider? stagingCanvas;
 
     /// <summary>
     /// Visible canvas that receives all drawings that are staged.
     /// </summary>
-    private BECanvas? targetCanvas = new();
+    private IBECanvasProvider? targetCanvas;
 
     private bool isInitialized = false;
+
+    public AnalogClock()
+    {
+        this.stagingCanvas = new BECanvasProvider();
+        this.targetCanvas = new BECanvasProvider();
+    }
 
     /// <summary>
     /// Creates the contexts for drawing.
@@ -55,8 +60,8 @@ public sealed partial class AnalogClock : ComponentBase
     /// <returns></returns>
     private async Task SetupAsync()
     {
-        _stagingContext = await stagingCanvas.CreateCanvas2DAsync();
-        _targetContext = await targetCanvas.CreateCanvas2DAsync();
+        _stagingContext = await stagingCanvas!.GetCanvas2DAsync();
+        _targetContext = await targetCanvas!.GetCanvas2DAsync();
         isInitialized = true;
     }
 
@@ -98,7 +103,7 @@ public sealed partial class AnalogClock : ComponentBase
     /// <returns></returns>
     public async Task RenderAsync()
     {
-        await _targetContext!.DrawImageAsync(stagingCanvas!.CanvasReference, 0, 0);
+        await _targetContext!.DrawImageAsync(stagingCanvas!.GetCanvasReference(), 0, 0);
     }
 
     /// <summary>

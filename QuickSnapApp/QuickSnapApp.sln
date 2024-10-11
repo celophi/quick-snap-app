@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickSnappApp", "QuickSnapApp\QuickSnappApp.csproj", "{832A3240-DFFE-4962-8E35-D0A17B19935A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickSnapApp", "QuickSnapApp\QuickSnapApp.csproj", "{832A3240-DFFE-4962-8E35-D0A17B19935A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickSnappApp.Canvas", "QuickSnapApp.Canvas\QuickSnappApp.Canvas.csproj", "{4179896C-BA88-4CC9-B196-99C3665E2724}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickSnapApp.Canvas", "QuickSnapApp.Canvas\QuickSnapApp.Canvas.csproj", "{4179896C-BA88-4CC9-B196-99C3665E2724}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickSnappApp.Canvas.Tests", "QuickSnapApp.Canvas.Tests\QuickSnappApp.Canvas.Tests.csproj", "{67D3D65D-3E5E-4079-BAF9-E17AC5727285}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickSnapApp.Canvas.Tests", "QuickSnapApp.Canvas.Tests\QuickSnapApp.Canvas.Tests.csproj", "{67D3D65D-3E5E-4079-BAF9-E17AC5727285}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuickSnapApp.Tests", "QuickSnapApp.Tests\QuickSnapApp.Tests.csproj", "{A0BE62B0-C501-46A3-89E7-19367C480000}"
 EndProject

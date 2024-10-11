@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace QuickSnappApp;
+namespace QuickSnapApp;
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate
 {

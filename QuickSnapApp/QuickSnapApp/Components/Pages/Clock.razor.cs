@@ -1,8 +1,8 @@
-﻿using QuickSnappApp.Canvas;
-using QuickSnappApp.Providers;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using QuickSnapApp.Canvas;
+using QuickSnapApp.Providers;
 
-namespace QuickSnappApp.Components.Pages;
+namespace QuickSnapApp.Components.Pages;
 public sealed partial class Clock : ComponentBase, IDisposable
 {
     [Inject]

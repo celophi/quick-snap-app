@@ -2,7 +2,7 @@ using Blazor.Extensions.Canvas;
 using Bunit;
 using Moq;
 
-namespace QuickSnappApp.Canvas.Tests;
+namespace QuickSnapApp.Canvas.Tests;
 
 public class AnalogClockSpecification
 {

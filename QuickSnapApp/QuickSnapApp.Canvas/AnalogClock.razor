@@ -1,6 +1,7 @@
-﻿@using Blazor.Extensions.Canvas
+﻿@using QuickSnapApp.Canvas.Providers
+@using Blazor.Extensions.Canvas
 
 <div style="display:none">
-    <BECanvas @ref="stagingCanvas" Width="Width" Height="Width"></BECanvas>
+    <BECanvasProvider @ref="stagingCanvas" Width="Width" Height="Width"></BECanvasProvider>
 </div>
-<BECanvas @ref="targetCanvas" Width="Width" Height="Width"></BECanvas>
+<BECanvasProvider @ref="targetCanvas" Width="Width" Height="Width"></BECanvasProvider>

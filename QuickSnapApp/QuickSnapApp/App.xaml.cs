@@ -1,4 +1,4 @@
-﻿namespace QuickSnappApp;
+﻿namespace QuickSnapApp;
 
 public partial class App : Application
 {

@@ -1,10 +1,10 @@
 using Bunit;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
-using QuickSnappApp.Components.Pages;
-using QuickSnappApp.Providers;
+using QuickSnapApp.Components.Pages;
+using QuickSnapApp.Providers;
 
-namespace QuickSnappApp.Tests;
+namespace QuickSnapApp.Tests;
 
 public class ClockSpecification
 {

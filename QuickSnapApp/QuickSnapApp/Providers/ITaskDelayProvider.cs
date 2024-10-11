@@ -1,4 +1,4 @@
-﻿namespace QuickSnappApp.Providers;
+﻿namespace QuickSnapApp.Providers;
 public interface ITaskDelayProvider
 {
     /// <summary>

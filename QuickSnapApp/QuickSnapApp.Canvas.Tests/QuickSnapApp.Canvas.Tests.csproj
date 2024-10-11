@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\QuickSnapApp.Canvas\QuickSnappApp.Canvas.csproj" />
+    <ProjectReference Include="..\QuickSnapApp.Canvas\QuickSnapApp.Canvas.csproj" />
   </ItemGroup>
 
   <ItemGroup>

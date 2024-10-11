@@ -1,4 +1,4 @@
-﻿namespace QuickSnappApp.Configuration;
+﻿namespace QuickSnapApp.Configuration;
 public enum EnvironmentType
 {
     Development,

@@ -1,6 +1,6 @@
-﻿using QuickSnappApp.Providers;
+﻿using QuickSnapApp.Providers;
 
-namespace QuickSnappApp;
+namespace QuickSnapApp;
 public sealed class DependencyProvider
 {
     private readonly IServiceCollection _serviceCollection;

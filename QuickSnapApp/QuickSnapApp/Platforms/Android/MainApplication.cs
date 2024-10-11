@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace QuickSnappApp;
+namespace QuickSnapApp;
 [Application]
 public class MainApplication : MauiApplication
 {

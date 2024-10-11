@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using System.ComponentModel.DataAnnotations;
 
-namespace QuickSnappApp.Components.Pages;
-
+namespace QuickSnapApp.Components.Pages;
 public sealed partial class Login : ComponentBase
 {
     private LoginModel loginModel = new LoginModel();

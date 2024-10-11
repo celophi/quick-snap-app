@@ -7,8 +7,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="JerryCanvas.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="JerryCanvas.razor" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="JerryCanvas.razor" />
   </ItemGroup>
 
 </Project>

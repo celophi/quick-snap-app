@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace QuickSnappApp.Canvas;
+namespace QuickSnapApp.Canvas;
 public sealed class DependencyProvider
 {
     private readonly IServiceCollection _serviceCollection;
