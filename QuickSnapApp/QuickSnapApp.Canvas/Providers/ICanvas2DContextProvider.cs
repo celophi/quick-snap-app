@@ -8,7 +8,6 @@ public interface ICanvas2DContextProvider
     Task EndBatchAsync();
     Task BeginPathAsync();
     Task DrawImageAsync(ElementReference elementReference, double dx, double dy);
-
     Task SetTransformAsync(double m11, double m12, double m21, double m22, double dx, double dy);
     Task SetFillStyleAsync(object value);
     Task FillRectAsync(double x, double y, double width, double height);

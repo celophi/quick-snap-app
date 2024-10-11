@@ -1,7 +1,7 @@
 ﻿
-using QuickSnapApp.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using QuickSnapApp.Configuration;
 using System.Reflection;
 
 namespace QuickSnapApp;
@@ -29,7 +29,6 @@ public static class MauiProgram
             builder.Logging.AddDebug();
         }
 
-        new Canvas.DependencyProvider(builder.Services).Register();
         new DependencyProvider(builder.Services).Register();
 
         return builder.Build();

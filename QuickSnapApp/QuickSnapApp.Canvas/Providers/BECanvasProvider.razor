@@ -1,4 +1,4 @@
-﻿@using Blazor.Extensions.Canvas
-@inherits BECanvas
+﻿@using Blazor.Extensions
+@inherits BECanvasComponent
 
-<!-- This is empty in order to allow us to test elements that use @ref markers -->
+<canvas id="@Id" width="@Width" height="@Height" @ref="_canvasRef"></canvas>

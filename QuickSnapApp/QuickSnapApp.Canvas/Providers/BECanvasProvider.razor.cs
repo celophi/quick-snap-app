@@ -1,9 +1,8 @@
 ﻿using Blazor.Extensions;
-using Blazor.Extensions.Canvas;
 using Microsoft.AspNetCore.Components;
 
 namespace QuickSnapApp.Canvas.Providers;
-public partial class BECanvasProvider : BECanvas, IBECanvasProvider
+public partial class BECanvasProvider : IBECanvasProvider
 {
     public async Task<ICanvas2DContextProvider> GetCanvas2DAsync()
     {

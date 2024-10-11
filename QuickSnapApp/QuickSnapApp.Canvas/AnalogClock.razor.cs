@@ -5,6 +5,9 @@ using QuickSnapApp.Canvas.Providers;
 namespace QuickSnapApp.Canvas;
 public sealed partial class AnalogClock : ComponentBase
 {
+    [Inject]
+    private IBECanvasFactory _becanvasFactory { get; init; } = default!;
+
     /// <summary>
     /// Width of the clock in pixels.
     /// </summary>
