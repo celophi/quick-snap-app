@@ -22,6 +22,7 @@ public sealed class DependencyProvider
             .AddTransient<IPermissionsProvider, PermissionsProvider>()
             .AddTransient<IBECanvasFactory, BECanvasFactory>()
             .AddTransient<IMathProvider, MathProvider>();
+        //.AddTransient<IBECanvasProvider, BECanvasProvider>();
 
         _serviceCollection.AddTransient(sp => MediaPicker.Default);
 

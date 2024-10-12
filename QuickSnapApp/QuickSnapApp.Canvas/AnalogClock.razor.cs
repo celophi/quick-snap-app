@@ -6,9 +6,6 @@ namespace QuickSnapApp.Canvas;
 public sealed partial class AnalogClock : ComponentBase
 {
     [Inject]
-    private IBECanvasFactory _becanvasFactory { get; init; } = default!;
-
-    [Inject]
     private IMathProvider _mathProvider { get; init; } = default!;
 
     /// <summary>
@@ -45,12 +42,14 @@ public sealed partial class AnalogClock : ComponentBase
     /// <summary>
     /// Invisible canvas that is used to stage all drawing operations.
     /// </summary>
-    private IBECanvasProvider? _stagingCanvas;
+
+    public IBECanvasProvider? _stagingCanvas { get; set; }
 
     /// <summary>
     /// Visible canvas that receives all drawings that are staged.
     /// </summary>
-    private IBECanvasProvider? _targetCanvas;
+
+    public IBECanvasProvider? _targetCanvas { get; set; }
 
     private bool isInitialized = false;
 
@@ -62,8 +61,6 @@ public sealed partial class AnalogClock : ComponentBase
     /// <returns></returns>
     private async Task SetupAsync()
     {
-        _stagingCanvas = _becanvasFactory.Create();
-        _targetCanvas = _becanvasFactory.Create();
         _stagingContext = await _stagingCanvas!.GetCanvas2DAsync();
         _targetContext = await _targetCanvas!.GetCanvas2DAsync();
         isInitialized = true;

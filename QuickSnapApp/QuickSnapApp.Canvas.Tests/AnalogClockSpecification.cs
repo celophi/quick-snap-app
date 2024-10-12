@@ -257,6 +257,9 @@ public class AnalogClockSpecification
           .Add(p => p.ForegroundColor, ForegroundColor)
         );
 
+        component.Instance._stagingCanvas = _stagingCanvasMock.Object;
+        component.Instance._targetCanvas = _targetCanvasMock.Object;
+
         // When I draw
         var action = async () => await component.Instance.DrawAsync(currentTime);
 
@@ -274,11 +277,11 @@ public class AnalogClockSpecification
           .Add(p => p.ForegroundColor, ForegroundColor)
         );
 
+        component.Instance._stagingCanvas = _stagingCanvasMock.Object;
+        component.Instance._targetCanvas = _targetCanvasMock.Object;
+
         // When I draw
         await component.Instance.DrawAsync(currentTime);
-
-        // Then I expect to have canvases
-        _becanvasFactoryMock.Verify(m => m.Create(), Times.Exactly(2));
 
         // Then I expect to have a staging context
         _stagingCanvasMock.Verify(m => m.GetCanvas2DAsync(), Times.Once);
@@ -296,6 +299,9 @@ public class AnalogClockSpecification
           .Add(p => p.BackgroundColor, BackgroundColor)
           .Add(p => p.ForegroundColor, ForegroundColor)
         );
+
+        component.Instance._stagingCanvas = _stagingCanvasMock.Object;
+        component.Instance._targetCanvas = _targetCanvasMock.Object;
 
         // Given I have drawn a clock
         await component.Instance.DrawAsync(currentTime);
