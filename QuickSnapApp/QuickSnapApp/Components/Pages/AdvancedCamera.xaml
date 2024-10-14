@@ -10,22 +10,19 @@
         </Grid.RowDefinitions>
         <toolkit:CameraView x:Name="DefaultCamera" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
         <StackLayout VerticalOptions="End" Padding="10" Spacing="10" Grid.Row="1">
-            <!-- Instructional text -->
             <Label Text="Position your face in the center of the screen"
                    FontSize="Small"
                    HorizontalOptions="Center"
                    TextColor="White"
                    Margin="0, 0, 0, 40"/>
 
-
-            <!-- Button row -->
             <Grid ColumnDefinitions="*,*,*">
                 <Button Text="Cancel"
                         Grid.Column="0"
                         BackgroundColor="Black"
                         TextColor="White"
                         HorizontalOptions="Center"
-                        />
+                        Clicked="OnCancel"/>
 
                 <Button Grid.Column="1"
                         BackgroundColor="White"
@@ -44,7 +41,7 @@
                         HorizontalOptions="Center"
                         BackgroundColor="Black"
                         TextColor="White"
-                        />
+                        Clicked="OnSwitch"/>
             </Grid>
         </StackLayout>
     </Grid>

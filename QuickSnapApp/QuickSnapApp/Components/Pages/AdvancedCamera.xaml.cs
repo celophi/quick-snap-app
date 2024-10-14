@@ -16,17 +16,16 @@ public partial class AdvancedCamera : ContentPage
         _cameraProvider = cameraProvider;
     }
 
-    // Implemented as a follow up video https://youtu.be/JUdfA7nFdWw
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
     {
         base.OnNavigatedTo(args);
 
         await _cameraProvider.RefreshAvailableCameras(CancellationToken.None);
         DefaultCamera!.SelectedCamera = _cameraProvider.AvailableCameras
-            .Where(c => c.Position == CameraPosition.Front).FirstOrDefault();
+            .Where(c => c.Position == CameraPosition.Front)
+            .FirstOrDefault();
     }
 
-    // Implemented as a follow up video https://youtu.be/JUdfA7nFdWw
     protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
     {
         base.OnNavigatedFrom(args);
@@ -34,5 +33,27 @@ public partial class AdvancedCamera : ContentPage
         DefaultCamera.Handler?.DisconnectHandler();
     }
 
+    /// <summary>
+    /// Button handler for the cancel event.
+    /// Navigates to the root view.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnCancel(object sender, EventArgs e)
+    {
+        _navigationService.NavigateFromXamlToBlazor("/");
+    }
 
+    /// <summary>
+    /// Button handler for the switch camera event.
+    /// Switches the selected camera based on position.
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnSwitch(object sender, EventArgs e)
+    {
+        DefaultCamera!.SelectedCamera = _cameraProvider.AvailableCameras!
+            .Where(c => c.Position != DefaultCamera!.SelectedCamera.Position)
+            .FirstOrDefault();
+    }
 }
