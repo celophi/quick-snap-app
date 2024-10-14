@@ -18,7 +18,7 @@ public class AnalogClockSpecification
 
     private readonly TestContext testContext;
 
-    private DateTime currentTime = new(2000, 01, 02, 12, 0, 0);
+    private readonly DateTime currentTime = new(2000, 01, 02, 12, 0, 0);
     private const int Width = 100;
     private const string BackgroundColor = "pink";
     private const string ForegroundColor = "yellow";

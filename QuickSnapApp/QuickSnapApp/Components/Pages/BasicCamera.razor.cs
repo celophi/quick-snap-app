@@ -1,5 +1,5 @@
-﻿using QuickSnapApp.Providers;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
+using QuickSnapApp.Providers;
 
 namespace QuickSnapApp.Components.Pages;
 public sealed partial class Camera : ComponentBase

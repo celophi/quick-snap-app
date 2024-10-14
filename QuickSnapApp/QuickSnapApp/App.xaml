@@ -4,12 +4,22 @@
              xmlns:local="clr-namespace:QuickSnapApp"
              x:Class="QuickSnapApp.App">
     <Application.MainPage>
-        <ContentPage BackgroundColor="{DynamicResource PageBackgroundColor}">
-            <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
-                <BlazorWebView.RootComponents>
-                    <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Routes}" />
-                </BlazorWebView.RootComponents>
-            </BlazorWebView>
-        </ContentPage>
+        <Shell FlyoutBehavior="Disabled" NavBarIsVisible="False">
+            <ShellContent Shell.NavBarIsVisible="False">
+                <ShellContent.ContentTemplate>
+                    <DataTemplate>
+                        <ContentPage>
+                            <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+                                <BlazorWebView.RootComponents>
+                                    <RootComponent Selector="#app" ComponentType="{x:Type local:Components.Routes}" />
+                                </BlazorWebView.RootComponents>
+                            </BlazorWebView>
+                        </ContentPage>
+                    </DataTemplate>
+                </ShellContent.ContentTemplate>
+            </ShellContent>
+        </Shell>
     </Application.MainPage>
 </Application>
+    
+ 

@@ -16,7 +16,7 @@ public class ClockSpecification
     private Mock<IDateTimeProvider> _dateTimeProviderMock;
     private Mock<ICancellationTokenSourceProvider> _cancellationTokenSourceProviderMock;
 
-    private DateTime now = new(2020, 01, 02, 03, 04, 05);
+    private readonly DateTime now = new(2020, 01, 02, 03, 04, 05);
     private readonly CancellationToken cancellationToken = new();
 
     private readonly TestContext testContext;

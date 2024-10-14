@@ -38,6 +38,19 @@
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(TargetFramework)'=='net8.0-ios'">
+      <CodesignKey>Apple Development: Chris Harris (QHWR9NM88J)</CodesignKey>
+      <CodesignProvision>VS: WildCard Development</CodesignProvision>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
+      <MtouchDebug>True</MtouchDebug>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
+      <MtouchDebug>True</MtouchDebug>
+    </PropertyGroup>
 	
     <ItemGroup>
         <!-- App Icon -->
@@ -75,6 +88,7 @@
 
     <ItemGroup>
         <PackageReference Include="Blazor.Extensions.Canvas" Version="1.1.1" />
+        <PackageReference Include="CommunityToolkit.Maui.Camera" Version="1.0.5" />
         <PackageReference Include="Microsoft.Maui.Controls" Version="8.0.91" />
         <PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="8.0.91" />
@@ -97,6 +111,12 @@
       <Content Update="wwwroot\img\logo.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="Components\Pages\AdvancedCamera.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
     </ItemGroup>
 
 </Project>

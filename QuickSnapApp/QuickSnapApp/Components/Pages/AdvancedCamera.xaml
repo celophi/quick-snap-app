@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="QuickSnapApp.Components.Pages.AdvancedCamera"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <toolkit:CameraView x:Name="DefaultCamera" Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"/>
+        <StackLayout VerticalOptions="End" Padding="10" Spacing="10" Grid.Row="1">
+            <!-- Instructional text -->
+            <Label Text="Position your face in the center of the screen"
+                   FontSize="Small"
+                   HorizontalOptions="Center"
+                   TextColor="White"
+                   Margin="0, 0, 0, 40"/>
+
+
+            <!-- Button row -->
+            <Grid ColumnDefinitions="*,*,*">
+                <Button Text="Cancel"
+                        Grid.Column="0"
+                        BackgroundColor="Black"
+                        TextColor="White"
+                        HorizontalOptions="Center"
+                        />
+
+                <Button Grid.Column="1"
+                        BackgroundColor="White"
+                        CornerRadius="50"
+                        WidthRequest="80"
+                        HeightRequest="80"
+                        BorderColor="Gray"
+                        BorderWidth="5">
+                    <Button.Shadow>
+                        <Shadow Brush="Black" Opacity="0.3" Radius="10" />
+                    </Button.Shadow>
+                </Button>
+
+                <Button Text="Switch Camera"
+                        Grid.Column="2"
+                        HorizontalOptions="Center"
+                        BackgroundColor="Black"
+                        TextColor="White"
+                        />
+            </Grid>
+        </StackLayout>
+    </Grid>
+</ContentPage>
