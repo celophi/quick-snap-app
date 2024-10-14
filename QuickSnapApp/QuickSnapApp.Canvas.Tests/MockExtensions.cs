@@ -31,18 +31,19 @@ public static class MockExtensions
 
             var serializedExpression = debugViewProperty!.GetValue(expressions[i]) as string;
 
-            if (!groups.ContainsKey(serializedExpression!))
+            if (!groups.TryGetValue(serializedExpression!, out List<int>? value))
             {
-                groups.Add(serializedExpression!, new List<int>());
+                value = [];
+                groups.Add(serializedExpression!, value);
             }
 
-            groups[serializedExpression!].Add(i);
+            value.Add(i);
 
             mock.Setup(expressions[i]).Callback(() =>
             {
                 mock.Verify(expressions[sharedCallCount]);
                 groups.ContainsKey(serializedExpression!).Should().BeTrue();
-                groups[serializedExpression!].Contains(sharedCallCount).Should().BeTrue();
+                value.Contains(sharedCallCount).Should().BeTrue();
 
                 sharedCallCount++;
             });

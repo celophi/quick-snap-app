@@ -19,9 +19,6 @@ public sealed partial class Clock : ComponentBase, IDisposable
 
     private AnalogClock _analogClock = new();
 
-    private const string grayColor = "#f8f9fa";
-    private const string blueColor = "#007bff";
-
     /// <summary>
     /// Digital clock time.
     /// </summary>
@@ -50,9 +47,16 @@ public sealed partial class Clock : ComponentBase, IDisposable
             {
                 while (!_cancellationTokenProvider.IsCancellationRequested(_cancellationTokenSource))
                 {
-                    await RenderAsync();
+                    try
+                    {
+                        await RenderAsync();
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        // The operation was canceled. No further action is required.
+                    }
                 }
-            });
+            }, _cancellationTokenSource.Token);
         }
 
         await Task.CompletedTask;

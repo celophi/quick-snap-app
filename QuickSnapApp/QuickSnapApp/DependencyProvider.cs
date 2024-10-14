@@ -2,15 +2,8 @@
 using QuickSnapApp.Providers;
 
 namespace QuickSnapApp;
-public sealed class DependencyProvider
+public sealed class DependencyProvider(IServiceCollection _serviceCollection)
 {
-    private readonly IServiceCollection _serviceCollection;
-
-    public DependencyProvider(IServiceCollection serviceCollection)
-    {
-        _serviceCollection = serviceCollection;
-    }
-
     public void Register()
     {
         _serviceCollection
