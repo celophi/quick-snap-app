@@ -5,16 +5,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Moq;
 using QuickSnapApp.Canvas.Providers;
-using System.Linq.Expressions;
-using System.Reflection;
 
 namespace QuickSnapApp.Canvas.Tests;
 
 public class AnalogClockSpecification
 {
-    private readonly Mock<IBECanvasFactory> _becanvasFactoryMock;
-    private readonly Mock<IBECanvasProvider> _stagingCanvasMock;
-    private readonly Mock<IBECanvasProvider> _targetCanvasMock;
+    private readonly Mock<BECanvasProvider> _stagingCanvasMock;
+    private readonly Mock<BECanvasProvider> _targetCanvasMock;
     private readonly Mock<ICanvas2DContextProvider> _stagingContextMock;
     private readonly Mock<ICanvas2DContextProvider> _targetContextMock;
     private readonly Mock<IMathProvider> _mathProviderMock;
@@ -39,23 +36,29 @@ public class AnalogClockSpecification
         _targetContextMock = new Mock<ICanvas2DContextProvider>();
 
         // given I mock out the staging canvas
-        _stagingCanvasMock = new Mock<IBECanvasProvider>();
+        _stagingCanvasMock = new Mock<BECanvasProvider>();
         _stagingCanvasMock
             .Setup(m => m.GetCanvas2DAsync())
             .ReturnsAsync(() => _stagingContextMock.Object);
 
         // given I mock out the target canvas
-        _targetCanvasMock = new Mock<IBECanvasProvider>();
+        _targetCanvasMock = new Mock<BECanvasProvider>();
         _targetCanvasMock
             .Setup(m => m.GetCanvas2DAsync())
             .ReturnsAsync(() => _targetContextMock.Object);
 
-        // given I mock out the canvas factory
-        _becanvasFactoryMock = new Mock<IBECanvasFactory>();
-        _becanvasFactoryMock
-            .SetupSequence(m => m.Create())
-            .Returns(() => _stagingCanvasMock.Object)
-            .Returns(() => _targetCanvasMock.Object);
+        // given I mock out the canvas factory.
+        int invocationCount = 0;
+        testContext.ComponentFactories.AddMock(() =>
+        {
+            invocationCount++;
+            return invocationCount switch
+            {
+                1 => _stagingCanvasMock.Object,
+                2 => _targetCanvasMock.Object,
+                _ => new Mock<BECanvasProvider>().Object
+            };
+        });
 
         // given I replace all the mocks.
         ReplaceMocks();
@@ -64,9 +67,6 @@ public class AnalogClockSpecification
     {
         testContext.Services.RemoveAll<IMathProvider>();
         testContext.Services.AddSingleton(_mathProviderMock.Object);
-
-        testContext.Services.RemoveAll<IBECanvasFactory>();
-        testContext.Services.AddSingleton(_becanvasFactoryMock.Object);
     }
 
     private int Width = 100;
@@ -257,9 +257,6 @@ public class AnalogClockSpecification
           .Add(p => p.ForegroundColor, ForegroundColor)
         );
 
-        component.Instance._stagingCanvas = _stagingCanvasMock.Object;
-        component.Instance._targetCanvas = _targetCanvasMock.Object;
-
         // When I draw
         var action = async () => await component.Instance.DrawAsync(currentTime);
 
@@ -276,9 +273,6 @@ public class AnalogClockSpecification
           .Add(p => p.BackgroundColor, BackgroundColor)
           .Add(p => p.ForegroundColor, ForegroundColor)
         );
-
-        component.Instance._stagingCanvas = _stagingCanvasMock.Object;
-        component.Instance._targetCanvas = _targetCanvasMock.Object;
 
         // When I draw
         await component.Instance.DrawAsync(currentTime);
@@ -300,9 +294,6 @@ public class AnalogClockSpecification
           .Add(p => p.ForegroundColor, ForegroundColor)
         );
 
-        component.Instance._stagingCanvas = _stagingCanvasMock.Object;
-        component.Instance._targetCanvas = _targetCanvasMock.Object;
-
         // Given I have drawn a clock
         await component.Instance.DrawAsync(currentTime);
 
@@ -311,43 +302,5 @@ public class AnalogClockSpecification
 
         // Then I expect to copy to the target canvas
         _targetContextMock.Verify(m => m.DrawImageAsync(_stagingCanvasMock.Object.GetCanvasReference(), 0, 0), Times.Once);
-    }
-}
-
-public static class MockExtensions
-{
-    public static void ShouldBeInOrder<T>(this Mock<T> mock, params Expression<Action<T>>[] expressions) where T : class
-    {
-        // All closures have the same instance of sharedCallCount
-        var sharedCallCount = 0;
-
-        // the list are the indeces where the expression appears.
-        var groups = new Dictionary<string, List<int>>();
-
-        for (var i = 0; i < expressions.Length; i++)
-        {
-            // Moq has a unique way to identify if an expression is identical to another when attaching callbacks.
-            // This method serializes the expression name, types, arguments, so that calls can be grouped to make sure an invocation is in order.
-            var debugViewProperty = typeof(Expression)
-                .GetProperty("DebugView", BindingFlags.Instance | BindingFlags.NonPublic);
-
-            var serializedExpression = debugViewProperty!.GetValue(expressions[i]) as string;
-
-            if (!groups.ContainsKey(serializedExpression!))
-            {
-                groups.Add(serializedExpression!, new List<int>());
-            }
-
-            groups[serializedExpression!].Add(i);
-
-            mock.Setup(expressions[i]).Callback(() =>
-            {
-                mock.Verify(expressions[sharedCallCount]);
-                groups.ContainsKey(serializedExpression!).Should().BeTrue();
-                groups[serializedExpression!].Contains(sharedCallCount).Should().BeTrue();
-
-                sharedCallCount++;
-            });
-        }
     }
 }

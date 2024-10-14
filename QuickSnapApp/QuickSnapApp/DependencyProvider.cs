@@ -1,5 +1,4 @@
-﻿using QuickSnapApp.Canvas;
-using QuickSnapApp.Canvas.Providers;
+﻿using QuickSnapApp.Canvas.Providers;
 using QuickSnapApp.Providers;
 
 namespace QuickSnapApp;
@@ -20,22 +19,8 @@ public sealed class DependencyProvider
             .AddTransient<ITaskDelayProvider, TaskDelayProvider>()
             .AddTransient<ICancellationTokenProvider, CancellationTokenProvider>()
             .AddTransient<IPermissionsProvider, PermissionsProvider>()
-            .AddTransient<IBECanvasFactory, BECanvasFactory>()
             .AddTransient<IMathProvider, MathProvider>();
-        //.AddTransient<IBECanvasProvider, BECanvasProvider>();
 
         _serviceCollection.AddTransient(sp => MediaPicker.Default);
-
-        //_serviceCollection
-        //    .AddTransient(sp => MediaPicker.Default)
-        //    .AddTransient<IPermissionsProvider, PermissionsProvider>()
-        //    .AddTransient<INavigationManagerProvider, NavigationManagerProvider>()
-        //    .AddTransient<IShellProvider, ShellProvider>();
-
-        //_serviceCollection.AddTransient<Components.Pages.Camera>();
-
-        //// This is registered as a singleton in order for all XAML pages
-        //// to always use the navigation manager that is linked to the top-level BlazorWebView.
-        //_serviceCollection.AddSingleton<INavigationService, NavigationService>();
     }
 }

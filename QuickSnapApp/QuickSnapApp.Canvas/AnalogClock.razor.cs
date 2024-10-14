@@ -43,13 +43,13 @@ public sealed partial class AnalogClock : ComponentBase
     /// Invisible canvas that is used to stage all drawing operations.
     /// </summary>
 
-    public IBECanvasProvider? _stagingCanvas { get; set; }
+    private BECanvasProvider? _stagingCanvas;
 
     /// <summary>
     /// Visible canvas that receives all drawings that are staged.
     /// </summary>
 
-    public IBECanvasProvider? _targetCanvas { get; set; }
+    private BECanvasProvider? _targetCanvas;
 
     private bool isInitialized = false;
 
