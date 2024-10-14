@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Components;
 using QuickSnapApp.Canvas.Providers;
 
 namespace QuickSnapApp.Canvas;
-public sealed partial class AnalogClock : ComponentBase
+public partial class AnalogClock : ComponentBase
 {
     [Inject]
     private IMathProvider _mathProvider { get; init; } = default!;
@@ -28,6 +28,12 @@ public sealed partial class AnalogClock : ComponentBase
     [Parameter]
     [EditorRequired]
     public string ForegroundColor { get; set; } = default!;
+
+    /// <summary>
+    /// Time to draw and render.
+    /// </summary>
+    [Parameter]
+    public DateTime? Time { get; set; } = default!;
 
     /// <summary>
     /// 2D context for staging.
@@ -56,6 +62,22 @@ public sealed partial class AnalogClock : ComponentBase
     private double PI => _mathProvider.PI;
 
     /// <summary>
+    /// Time drawing and rendering is done by parameter setting to make it easier to test.
+    /// Doing this avoids @ref https://bunit.dev/docs/providing-input/substituting-components.html?tabs=moq.
+    /// </summary>
+    /// <returns></returns>
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Time is null || _stagingCanvas is null || _targetCanvas is null)
+        {
+            return;
+        }
+
+        await this.DrawAsync();
+        await this.RenderAsync();
+    }
+
+    /// <summary>
     /// Creates the contexts for drawing.
     /// </summary>
     /// <returns></returns>
@@ -70,7 +92,7 @@ public sealed partial class AnalogClock : ComponentBase
     /// Draws the clock to a buffer.
     /// </summary>
     /// <returns></returns>
-    public async Task DrawAsync(DateTime time)
+    private async Task DrawAsync()
     {
         if (!isInitialized)
         {
@@ -93,7 +115,7 @@ public sealed partial class AnalogClock : ComponentBase
 
         await DrawFaceAsync(radius);
         await DrawNumbers(radius);
-        await DrawTime(radius, time);
+        await DrawTime(radius, Time.GetValueOrDefault());
 
         await _stagingContext.EndBatchAsync();
     }
@@ -102,7 +124,7 @@ public sealed partial class AnalogClock : ComponentBase
     /// Copy the drawing from the invisible canvas to the visible one to prevent the user from seeing artificats during the drawing process.
     /// </summary>
     /// <returns></returns>
-    public async Task RenderAsync()
+    private async Task RenderAsync()
     {
         await _targetContext!.DrawImageAsync(_stagingCanvas!.GetCanvasReference(), 0, 0);
     }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using QuickSnapApp.Canvas;
 using QuickSnapApp.Providers;
 
 namespace QuickSnapApp.Components.Pages;
@@ -15,9 +14,7 @@ public sealed partial class Clock : ComponentBase, IDisposable
     private IDateTimeProvider _dateTimeProvider { get; init; } = default!;
 
     [Inject]
-    private ICancellationTokenProvider _cancellationTokenProvider { get; init; } = default!;
-
-    private AnalogClock _analogClock = new();
+    private ICancellationTokenSourceProvider _cancellationTokenSourceProvider { get; init; } = default!;
 
     /// <summary>
     /// Digital clock time.
@@ -32,12 +29,7 @@ public sealed partial class Clock : ComponentBase, IDisposable
     /// <summary>
     /// Synchronized time to display for both clocks.
     /// </summary>
-    private DateTime renderedTime;
-
-    /// <summary>
-    /// Used to cancel the rendering task.
-    /// </summary>
-    private readonly CancellationTokenSource _cancellationTokenSource = new();
+    private DateTime? renderedTime;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -45,7 +37,7 @@ public sealed partial class Clock : ComponentBase, IDisposable
         {
             _renderTask = _taskRunProvider.Run(async () =>
             {
-                while (!_cancellationTokenProvider.IsCancellationRequested(_cancellationTokenSource))
+                while (!_cancellationTokenSourceProvider.IsCancellationRequested())
                 {
                     try
                     {
@@ -56,7 +48,7 @@ public sealed partial class Clock : ComponentBase, IDisposable
                         // The operation was canceled. No further action is required.
                     }
                 }
-            }, _cancellationTokenSource.Token);
+            }, _cancellationTokenSourceProvider.Token());
         }
 
         await Task.CompletedTask;
@@ -70,32 +62,26 @@ public sealed partial class Clock : ComponentBase, IDisposable
     {
         // Determine the starting time and time to render for both clocks.
         renderedTime = _dateTimeProvider.Now();
-        timeOfDay = renderedTime.ToString("h:mm:ss tt");
+        timeOfDay = renderedTime.GetValueOrDefault().ToString("h:mm:ss tt");
 
-        // Draw the analog clock
-        await _analogClock.DrawAsync(renderedTime);
-
-        // Copy the drawing from the invisible canvas to the visible one to prevent the user from seeing artificats during the drawing process.
-        await _analogClock.RenderAsync();
-
-        // This is necessary for the digital clock to be re-rendered.
+        // This is necessary for both clocks to be re-rendered.
         await InvokeAsync(StateHasChanged);
 
         // Measure the time taken for all rendering and apply a floor of at least 1 second delay.
         // This helps make the clock rendering look consistent.
         const int targetDelayMs = 1000;
-        var elapsed = _dateTimeProvider.Now() - renderedTime;
+        var elapsed = _dateTimeProvider.Now() - renderedTime.GetValueOrDefault();
         var remainingDelay = targetDelayMs - (int)elapsed.TotalMilliseconds;
 
         if (remainingDelay > 0)
         {
-            await _taskDelayProvider.Delay(remainingDelay, _cancellationTokenSource.Token);
+            await _taskDelayProvider.Delay(remainingDelay, _cancellationTokenSourceProvider.Token());
         }
     }
 
     /// <inheritdoc/>
     public void Dispose()
     {
-        _cancellationTokenSource.Cancel();
+        _cancellationTokenSourceProvider.Cancel();
     }
 }
