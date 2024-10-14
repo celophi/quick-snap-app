@@ -18,9 +18,8 @@ public partial class AdvancedCamera : ContentPage
 
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
     {
-        base.OnNavigatedTo(args);
+        await _cameraProvider.RefreshAvailableCameras(default);
 
-        await _cameraProvider.RefreshAvailableCameras(CancellationToken.None);
         DefaultCamera!.SelectedCamera = _cameraProvider.AvailableCameras
             .Where(c => c.Position == CameraPosition.Front)
             .FirstOrDefault();
@@ -28,8 +27,6 @@ public partial class AdvancedCamera : ContentPage
 
     protected override void OnNavigatedFrom(NavigatedFromEventArgs args)
     {
-        base.OnNavigatedFrom(args);
-
         DefaultCamera.Handler?.DisconnectHandler();
     }
 

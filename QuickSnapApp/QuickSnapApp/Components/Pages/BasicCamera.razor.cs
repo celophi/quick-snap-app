@@ -2,13 +2,18 @@
 using QuickSnapApp.Providers;
 
 namespace QuickSnapApp.Components.Pages;
-public sealed partial class Camera : ComponentBase
+public sealed partial class BasicCamera : ComponentBase
 {
     [Inject]
     private IPermissionsProvider _permissionsProvider { get; init; } = default!;
 
     [Inject]
     private IMediaPicker _mediaPicker { get; init; } = default!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
