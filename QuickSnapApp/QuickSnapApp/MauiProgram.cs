@@ -20,6 +20,7 @@ public static class MauiProgram
             });
 
         builder.Services.AddMauiBlazorWebView();
+        builder.Services.AddHttpClient();
         builder.AddAppSettings();
 
         var envString = builder.Configuration.GetValue<string>("Environment");

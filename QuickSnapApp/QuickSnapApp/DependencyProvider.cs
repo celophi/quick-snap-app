@@ -1,4 +1,5 @@
-﻿using QuickSnapApp.Canvas.Providers;
+﻿using QuickSnapApp.Accounts;
+using QuickSnapApp.Canvas.Providers;
 using QuickSnapApp.Providers;
 using QuickSnapApp.Services;
 
@@ -16,7 +17,10 @@ public sealed class DependencyProvider(IServiceCollection _serviceCollection)
             .AddTransient<ICancellationTokenSourceProvider, CancellationTokenSourceProvider>()
             .AddTransient<IShellProvider, ShellProvider>()
             .AddTransient<INavigationManagerProvider, NavigationManagerProvider>()
-            .AddTransient<IDeviceInfoProvider, DeviceInfoProvider>();
+            .AddTransient<IDeviceInfoProvider, DeviceInfoProvider>()
+            .AddTransient<IAccountsProvider, AccountsProvider>()
+            .AddTransient<ISecureStorageProvider, SecureStorageProvider>()
+            .AddTransient<IAccountsRepository, AccountsRepository>();
 
         _serviceCollection.AddTransient(sp => MediaPicker.Default);
 

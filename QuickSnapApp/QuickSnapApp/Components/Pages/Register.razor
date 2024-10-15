@@ -1,4 +1,4 @@
-﻿@page "/"
+﻿@page "/register"
 
 <div class="main-content">
 
@@ -6,7 +6,7 @@
         <img src="img/register.png" />
     </div>
 
-    <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+    <EditForm Model="loginModel" OnValidSubmit="OnRegister">
         <DataAnnotationsValidator />
 
         <div class="mb-3">
