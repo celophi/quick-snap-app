@@ -82,21 +82,21 @@ public class AnalogClockSpecification
             // DrawAsync
             m => m.BeginBatchAsync(),
             m => m.SetTransformAsync(1, 0, 0, 1, 0, 0),
-            m => m.SetFillStyleAsync("white"),
+            m => m.SetFillStyleAsync(BackgroundColor),
             m => m.FillRectAsync(0, 0, Width, Width),
             m => m.TranslateAsync(50, 50),
             m => m.ArcAsync(0, 0, 45f, 0, 12, null),
-            m => m.SetFillStyleAsync(BackgroundColor),
+            m => m.SetFillStyleAsync(ForegroundColor),
             m => m.FillAsync(),
 
             // DrawFaceAsync
             m => m.BeginPathAsync(),
             m => m.ArcAsync(0, 0, 45f, 0, 12, null),
-            m => m.SetFillStyleAsync(BackgroundColor),
+            m => m.SetFillStyleAsync(ForegroundColor),
             m => m.FillAsync(),
             m => m.BeginPathAsync(),
             m => m.ArcAsync(0, 0, 4.5f, 0, 12, null),
-            m => m.SetFillStyleAsync(ForegroundColor),
+            m => m.SetFillStyleAsync("white"),
             m => m.FillAsync(),
 
             // DrawNumbers
@@ -214,7 +214,7 @@ public class AnalogClockSpecification
             m => m.RotateAsync(-12),
 
             // Draw Hands (hour)
-            m => m.SetStrokeStyleAsync(ForegroundColor),
+            m => m.SetStrokeStyleAsync("white"),
             m => m.BeginPathAsync(),
             m => m.SetLineWidthAsync(45f * 0.07f),
             m => m.SetLineCapAsync(LineCap.Round),
@@ -225,7 +225,7 @@ public class AnalogClockSpecification
             m => m.RotateAsync(0),
 
             // Draw Hands (minute)
-            m => m.SetStrokeStyleAsync(ForegroundColor),
+            m => m.SetStrokeStyleAsync("white"),
             m => m.BeginPathAsync(),
             m => m.SetLineWidthAsync(45f * 0.07f),
             m => m.SetLineCapAsync(LineCap.Round),
@@ -236,7 +236,7 @@ public class AnalogClockSpecification
             m => m.RotateAsync(0),
 
             // Draw Hands (second)
-            m => m.SetStrokeStyleAsync(ForegroundColor),
+            m => m.SetStrokeStyleAsync("white"),
             m => m.BeginPathAsync(),
             m => m.SetLineWidthAsync(45f * 0.02f),
             m => m.SetLineCapAsync(LineCap.Round),

@@ -1,5 +1,4 @@
-﻿using QuickSnapApp.API;
-using QuickSnapApp.Providers;
+﻿using QuickSnapApp.Providers;
 
 namespace QuickSnapApp.Accounts;
 public sealed class AccountsRepository(

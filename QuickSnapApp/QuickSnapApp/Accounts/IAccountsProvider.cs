@@ -1,6 +1,4 @@
-﻿using QuickSnapApp.API;
-
-namespace QuickSnapApp.Accounts;
+﻿namespace QuickSnapApp.Accounts;
 public interface IAccountsProvider
 {
     /// <summary>

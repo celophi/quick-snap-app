@@ -11,6 +11,6 @@ public sealed class NavigationManagerProvider : INavigationManagerProvider
     }
 
     /// <inheritdoc/>
-    public void NavigateTo(string uri) =>
-        _navigationManager.NavigateTo(uri);
+    public void NavigateTo(string uri, bool forceLoad = false) =>
+        _navigationManager.NavigateTo(uri, forceLoad);
 }

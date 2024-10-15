@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using QuickSnapApp.API;
 using QuickSnapApp.Configuration;
 using System.Net.Http.Json;
 
@@ -11,7 +10,7 @@ public sealed class AccountsProvider(HttpClient _httpClient, IOptions<ApiOptions
         try
         {
             var url = _apiOptions.Value.ApiUrl;
-            var response = await _httpClient.PostAsJsonAsync($"{_apiOptions.Value.ApiUrl}/api/accounts", request);
+            var response = await _httpClient.PostAsJsonAsync($"{_apiOptions.Value.ApiUrl}/api/accounts/register", request);
             return (await response.Content.ReadFromJsonAsync<AccountsRegisterResponseViewModel>())!;
         }
         catch (Exception ex)

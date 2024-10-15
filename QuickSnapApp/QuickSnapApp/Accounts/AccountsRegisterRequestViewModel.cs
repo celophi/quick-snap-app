@@ -1,4 +1,4 @@
-﻿namespace QuickSnapApp.API;
+﻿namespace QuickSnapApp.Accounts;
 public sealed class AccountsRegisterRequestViewModel
 {
     public required string Username { get; init; }

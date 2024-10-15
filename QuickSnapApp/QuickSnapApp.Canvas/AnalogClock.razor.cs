@@ -102,7 +102,7 @@ public partial class AnalogClock : ComponentBase
         await _stagingContext!.BeginBatchAsync();
         await _stagingContext.SetTransformAsync(1, 0, 0, 1, 0, 0);
 
-        await _stagingContext.SetFillStyleAsync("white");
+        await _stagingContext.SetFillStyleAsync(BackgroundColor);
         await _stagingContext.FillRectAsync(0, 0, Width, Width);
 
         float radius = Width / 2;
@@ -110,7 +110,7 @@ public partial class AnalogClock : ComponentBase
         radius = radius * 0.9f;
 
         await _stagingContext.ArcAsync(0, 0, radius, 0, 2 * PI);
-        await _stagingContext.SetFillStyleAsync(BackgroundColor);
+        await _stagingContext.SetFillStyleAsync(ForegroundColor);
         await _stagingContext.FillAsync();
 
         await DrawFaceAsync(radius);
@@ -139,13 +139,13 @@ public partial class AnalogClock : ComponentBase
         // Draw the big blue circle.
         await _stagingContext!.BeginPathAsync();
         await _stagingContext.ArcAsync(0, 0, radius, 0, 2 * PI);
-        await _stagingContext.SetFillStyleAsync(BackgroundColor);
+        await _stagingContext.SetFillStyleAsync(ForegroundColor);
         await _stagingContext.FillAsync();
 
         // Draw a smaller gray circle for the dials
         await _stagingContext.BeginPathAsync();
         await _stagingContext.ArcAsync(0, 0, radius * 0.1, 0, 2 * PI);
-        await _stagingContext.SetFillStyleAsync(ForegroundColor);
+        await _stagingContext.SetFillStyleAsync("white");
         await _stagingContext.FillAsync();
     }
 
@@ -211,7 +211,7 @@ public partial class AnalogClock : ComponentBase
     /// <returns></returns>
     private async Task DrawHand(float angle, float length, float width)
     {
-        await _stagingContext!.SetStrokeStyleAsync(ForegroundColor);
+        await _stagingContext!.SetStrokeStyleAsync("white");
         await _stagingContext.BeginPathAsync();
         await _stagingContext.SetLineWidthAsync(width);
         await _stagingContext.SetLineCapAsync(LineCap.Round);

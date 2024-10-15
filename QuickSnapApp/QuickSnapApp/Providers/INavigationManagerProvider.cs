@@ -5,5 +5,6 @@ public interface INavigationManagerProvider
     /// Navigates to a new page within Blazor.
     /// </summary>
     /// <param name="uri"></param>
-    void NavigateTo(string uri);
+    /// <param name="forceLoad"></param>
+    void NavigateTo(string uri, bool forceLoad = false);
 }
