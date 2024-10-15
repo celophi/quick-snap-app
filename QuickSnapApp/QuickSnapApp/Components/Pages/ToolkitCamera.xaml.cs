@@ -4,12 +4,12 @@ using QuickSnapApp.Services;
 
 namespace QuickSnapApp.Components.Pages;
 
-public partial class AdvancedCamera : ContentPage
+public partial class ToolkitCamera : ContentPage
 {
     private INavigationService _navigationService;
     private ICameraProvider _cameraProvider;
 
-    public AdvancedCamera(INavigationService navigationService, ICameraProvider cameraProvider)
+    public ToolkitCamera(INavigationService navigationService, ICameraProvider cameraProvider)
     {
         InitializeComponent();
         _navigationService = navigationService;

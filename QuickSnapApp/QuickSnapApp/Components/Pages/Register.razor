@@ -6,17 +6,17 @@
         <img src="img/register.png" />
     </div>
 
-    <EditForm Model="loginModel" OnValidSubmit="OnRegister">
+    <EditForm Model="registerModel" OnValidSubmit="OnRegister">
         <DataAnnotationsValidator />
 
         <div class="mb-3">
-            <InputText placeholder="Username" @bind-Value="loginModel.Username" class="form-control" />
-            <ValidationMessage For="@(() => loginModel.Username)" />
+            <InputText placeholder="Username" @bind-Value="registerModel.Username" class="form-control" />
+            <ValidationMessage For="@(() => registerModel.Username)" />
         </div>
 
         <div class="mb-3">
-            <InputText placeholder="Password" @bind-Value="loginModel.Password" type="password" class="form-control" />
-            <ValidationMessage For="@(() => loginModel.Password)" />
+            <InputText placeholder="Password" @bind-Value="registerModel.Password" type="password" class="form-control" />
+            <ValidationMessage For="@(() => registerModel.Password)" />
         </div>
 
         <button type="submit" class="btn btn-primary register-btn">Register</button>

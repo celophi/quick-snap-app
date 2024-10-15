@@ -9,6 +9,6 @@ public partial class App : Application
         InitializeComponent();
 
         // Define Routes
-        Routing.RegisterRoute("advanced-camera", typeof(AdvancedCamera));
+        Routing.RegisterRoute("toolkit-camera", typeof(ToolkitCamera));
     }
 }

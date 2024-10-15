@@ -8,6 +8,13 @@ public sealed class DependencyProvider(IServiceCollection _serviceCollection)
 {
     public void Register()
     {
+        this.RegisterTransients();
+        this.RegisterPages();
+        this.RegisterSingletons();
+    }
+
+    private void RegisterTransients()
+    {
         _serviceCollection
             .AddTransient<IDateTimeProvider, DateTimeProvider>()
             .AddTransient<ITaskRunProvider, TaskRunProvider>()
@@ -23,11 +30,17 @@ public sealed class DependencyProvider(IServiceCollection _serviceCollection)
             .AddTransient<IAccountsRepository, AccountsRepository>();
 
         _serviceCollection.AddTransient(sp => MediaPicker.Default);
+    }
 
-        _serviceCollection.AddTransient<Components.Pages.AdvancedCamera>();
-
+    private void RegisterSingletons()
+    {
         // This is registered as a singleton in order for all XAML pages
         // to always use the navigation manager that is linked to the top-level BlazorWebView.
         _serviceCollection.AddSingleton<INavigationService, NavigationService>();
+    }
+
+    private void RegisterPages()
+    {
+        _serviceCollection.AddTransient<Components.Pages.ToolkitCamera>();
     }
 }

@@ -2,7 +2,7 @@
 using QuickSnapApp.Providers;
 
 namespace QuickSnapApp.Components.Pages;
-public sealed partial class BasicCamera : ComponentBase
+public sealed partial class NativeCamera : ComponentBase
 {
     [Inject]
     private IPermissionsProvider _permissionsProvider { get; init; } = default!;

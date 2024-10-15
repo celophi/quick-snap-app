@@ -9,6 +9,6 @@ public partial class NavMenu
 
     private async Task OnNavigateAdvCamera()
     {
-        await _navigationService.NavigateToXamlAsync("advanced-camera");
+        await _navigationService.NavigateToXamlAsync("toolkit-camera");
     }
 }

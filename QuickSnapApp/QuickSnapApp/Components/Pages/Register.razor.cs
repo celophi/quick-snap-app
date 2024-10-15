@@ -12,15 +12,15 @@ public sealed partial class Register : ComponentBase
     [Inject]
     private INavigationService _navigationService { get; init; } = default!;
 
-    private LoginModel loginModel = new LoginModel();
+    private RegisterModel registerModel = new();
 
     private async Task OnRegister()
     {
-        await _accountsRepository.RegisterAsync(loginModel.Username, loginModel.Password);
+        await _accountsRepository.RegisterAsync(registerModel.Username, registerModel.Password);
         _navigationService.NavigateToBlazor("/home");
     }
 
-    public class LoginModel
+    private class RegisterModel
     {
         [Required(ErrorMessage = "Username is required.")]
         public string Username { get; set; }

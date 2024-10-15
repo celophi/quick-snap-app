@@ -7,6 +7,8 @@ public sealed class AccountsRepository(
     ISecureStorageProvider _secureStorageProvider,
     IDeviceInfoProvider _deviceInfoProvider) : IAccountsRepository
 {
+    private const string AuthTokenKey = "authToken";
+
     public async Task RegisterAsync(string username, string password)
     {
         var deviceName = _deviceInfoProvider.Name();
@@ -20,12 +22,18 @@ public sealed class AccountsRepository(
             Password = password,
         });
 
-        await _secureStorageProvider.SetAsync("authToken", response.Token);
+        await _secureStorageProvider.SetAsync(AuthTokenKey, response.Token);
     }
 
     public async Task<bool> HasAccountAsync()
     {
-        var token = await _secureStorageProvider.GetAsync("authToken");
+        var token = await _secureStorageProvider.GetAsync(AuthTokenKey);
         return token is not null;
+    }
+
+    public async Task DeleteAsync()
+    {
+        _secureStorageProvider.Remove(AuthTokenKey);
+        await Task.CompletedTask;
     }
 }

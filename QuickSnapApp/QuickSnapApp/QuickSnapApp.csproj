@@ -109,13 +109,19 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Compile Update="Components\Pages\ToolkitCamera.xaml.cs">
+        <DependentUpon>ToolkitCamera</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
       <Content Update="wwwroot\img\register.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <MauiXaml Update="Components\Pages\AdvancedCamera.xaml">
+      <MauiXaml Update="Components\Pages\ToolkitCamera.xaml">
         <Generator>MSBuild:Compile</Generator>
       </MauiXaml>
     </ItemGroup>

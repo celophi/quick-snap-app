@@ -23,6 +23,8 @@ public static class MauiProgram
         builder.Services.AddHttpClient();
         builder.AddAppSettings();
 
+        builder.Services.Configure<ApiOptions>(builder.Configuration.GetSection("ApiOptions"));
+
         var envString = builder.Configuration.GetValue<string>("Environment");
         Enum.TryParse(envString, true, out EnvironmentType environmentType);
 

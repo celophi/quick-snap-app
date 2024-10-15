@@ -8,7 +8,16 @@ public sealed class AccountsProvider(HttpClient _httpClient, IOptions<ApiOptions
 {
     public async Task<AccountsRegisterResponseViewModel> RegisterAsync(AccountsRegisterRequestViewModel request)
     {
-        var response = await _httpClient.PostAsJsonAsync($"{_apiOptions.Value.ApiUrl}/api/accounts", request);
-        return (await response.Content.ReadFromJsonAsync<AccountsRegisterResponseViewModel>())!;
+        try
+        {
+            var url = _apiOptions.Value.ApiUrl;
+            var response = await _httpClient.PostAsJsonAsync($"{_apiOptions.Value.ApiUrl}/api/accounts", request);
+            return (await response.Content.ReadFromJsonAsync<AccountsRegisterResponseViewModel>())!;
+        }
+        catch (Exception ex)
+        {
+            var a = ex;
+            throw;
+        }
     }
 }
