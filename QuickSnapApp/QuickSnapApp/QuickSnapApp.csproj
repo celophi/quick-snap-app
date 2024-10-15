@@ -108,7 +108,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Content Update="wwwroot\img\logo.png">
+      <Content Update="wwwroot\img\register.png">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
     </ItemGroup>

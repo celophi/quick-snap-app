@@ -1,0 +1,24 @@
+﻿@page "/"
+
+<div class="main-content">
+
+    <div class="row register-banner">
+        <img src="img/register.png" />
+    </div>
+
+    <EditForm Model="loginModel" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+
+        <div class="mb-3">
+            <InputText placeholder="Username" @bind-Value="loginModel.Username" class="form-control" />
+            <ValidationMessage For="@(() => loginModel.Username)" />
+        </div>
+
+        <div class="mb-3">
+            <InputText placeholder="Password" @bind-Value="loginModel.Password" type="password" class="form-control" />
+            <ValidationMessage For="@(() => loginModel.Password)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary register-btn">Register</button>
+    </EditForm>
+</div>

@@ -15,7 +15,8 @@ public sealed class DependencyProvider(IServiceCollection _serviceCollection)
             .AddTransient<IMathProvider, MathProvider>()
             .AddTransient<ICancellationTokenSourceProvider, CancellationTokenSourceProvider>()
             .AddTransient<IShellProvider, ShellProvider>()
-            .AddTransient<INavigationManagerProvider, NavigationManagerProvider>();
+            .AddTransient<INavigationManagerProvider, NavigationManagerProvider>()
+            .AddTransient<IDeviceInfoProvider, DeviceInfoProvider>();
 
         _serviceCollection.AddTransient(sp => MediaPicker.Default);
 
