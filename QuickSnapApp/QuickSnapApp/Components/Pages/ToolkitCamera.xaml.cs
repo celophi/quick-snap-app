@@ -1,19 +1,22 @@
 using CommunityToolkit.Maui.Core;
 using CommunityToolkit.Maui.Core.Primitives;
+using QuickSnapApp.Pictures;
 using QuickSnapApp.Services;
 
 namespace QuickSnapApp.Components.Pages;
 
 public partial class ToolkitCamera : ContentPage
 {
-    private INavigationService _navigationService;
-    private ICameraProvider _cameraProvider;
+    private readonly INavigationService _navigationService;
+    private readonly ICameraProvider _cameraProvider;
+    private readonly IPictureRepository _pictureRepository;
 
-    public ToolkitCamera(INavigationService navigationService, ICameraProvider cameraProvider)
+    public ToolkitCamera(INavigationService navigationService, ICameraProvider cameraProvider, IPictureRepository pictureRepository)
     {
         InitializeComponent();
         _navigationService = navigationService;
         _cameraProvider = cameraProvider;
+        _pictureRepository = pictureRepository;
     }
 
     protected async override void OnNavigatedTo(NavigatedToEventArgs args)
@@ -42,6 +45,16 @@ public partial class ToolkitCamera : ContentPage
     }
 
     /// <summary>
+    /// Button handler for the capture event
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void OnCapture(object sender, EventArgs e)
+    {
+        await DefaultCamera!.CaptureImage(default);
+    }
+
+    /// <summary>
     /// Button handler for the switch camera event.
     /// Switches the selected camera based on position.
     /// </summary>
@@ -52,5 +65,15 @@ public partial class ToolkitCamera : ContentPage
         DefaultCamera!.SelectedCamera = _cameraProvider.AvailableCameras!
             .Where(c => c.Position != DefaultCamera!.SelectedCamera.Position)
             .FirstOrDefault();
+    }
+
+    private async void OnMediaCaptured(object sender, CommunityToolkit.Maui.Views.MediaCapturedEventArgs e)
+    {
+        var buffer = new byte[e.Media.Length];
+        await e.Media.ReadAsync(buffer, default);
+
+        await _pictureRepository.SaveAsync(buffer, "image/png");
+
+        await _navigationService.NavigateFromXamlToBlazor("/home");
     }
 }

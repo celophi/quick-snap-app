@@ -13,10 +13,7 @@ public sealed partial class NativeCamera : ComponentBase
     private IMediaPicker _mediaPicker { get; init; } = default!;
 
     [Inject]
-    private IPicturesProvider _picturesProvider { get; init; } = default!;
-
-    [Inject]
-    private ISecureStorageProvider _secureStorageProvider { get; init; } = default!;
+    private IPictureRepository _pictureRepository { get; init; } = default!;
 
     [Inject]
     private INavigationService _navigationService { get; init; } = default!;
@@ -37,9 +34,7 @@ public sealed partial class NativeCamera : ComponentBase
             var stream = await file.OpenReadAsync();
             var buffer = new byte[stream.Length];
             await stream.ReadAsync(buffer, default);
-
-            var token = await _secureStorageProvider.GetAsync("authToken");
-            await _picturesProvider.SubmitAsync(token!, new PicturesSubmitRequestViewModel { Data = buffer, ContentType = file.ContentType });
+            await _pictureRepository.SaveAsync(buffer, file.ContentType);
         }
 
         _navigationService.NavigateToBlazor("/home");

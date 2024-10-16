@@ -29,7 +29,8 @@ public sealed class DependencyProvider(IServiceCollection _serviceCollection)
             .AddTransient<IAccountsProvider, AccountsProvider>()
             .AddTransient<ISecureStorageProvider, SecureStorageProvider>()
             .AddTransient<IAccountsRepository, AccountsRepository>()
-            .AddTransient<IPicturesProvider, PicturesProvider>();
+            .AddTransient<IPicturesProvider, PicturesProvider>()
+            .AddTransient<IPictureRepository, PictureRepository>();
 
         _serviceCollection.AddTransient(sp => MediaPicker.Default);
     }
