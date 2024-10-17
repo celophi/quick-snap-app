@@ -31,7 +31,7 @@ Follow these steps to set up and run the mobile app:
 ### Running the Application
 1. Clone this repository.
     ```bash
-    git clone https://github.com/YOUR-USERNAME/quick-snap-mobile.git
+    git clone https://github.com/celophi/quick-snap-mobile.git
     ```
 
 2. Set up and run the **QuickSnap Web** and **API** projects locally by following the instructions in the [QuickSnap Web and API Projects](https://github.com/celophi/quick-snap-web) repository.
